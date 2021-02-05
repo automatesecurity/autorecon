@@ -59,11 +59,9 @@ do
     banner "NMAP" > results
     printf "\nRunning Nmap on...$target\n"
     # Run Top 1000 TCP port scan per target and output
-    nmap -sC -sV --top-ports 10 $target -oA scans/$target/$target | tail -n +5 | head -n -3 >> results
+    nmap -sC -sV --top-ports 1000 $target -oA scans/$target/$target | tail -n +5 | head -n -3 >> results
     # TODO UDP Top 1000 scans
     # nmap -sUV -T4 -F --top-ports 100 --version-intensity 0  $target
-    # Delete this and next line once top 1000 is working properly
-    # nmap -sC -sV $target | tail -n +5 | head -n -3 | tee scans/$target/$target.nmap >> results
 
     while read line
     do
@@ -108,6 +106,10 @@ done
 rm results
 
 printf "\nFinished scanning $i targets\n\n"
+
+banner "Web Resources"
+./gowitness report list
+printf "\n\n"
 
 # Compile services from nmap scans
 mkdir "scans/services"
